@@ -1,9 +1,10 @@
 import express from 'express';
 import {getScenarios, createScenario} from '../controllers/scenarios-controller.js';
+import authJwt from '../middleware/authJwt.js';
 
 const router = express.Router();
 
-router.get('/', getScenarios);
-router.post('/', createScenario)
+router.get('/', [authJwt.verifyToken], getScenarios);
+router.post('/',  [authJwt.verifyToken], createScenario);
 
 export default router;
