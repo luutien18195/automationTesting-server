@@ -4,20 +4,22 @@ import {HTTP_STATUS} from "../utils/constant.js";
 export const getScenarios = async (req, res) => {
   try {
     let searchQuery = {};
-    if (req.query.name !== "") {
-      searchQuery.name = `/${req.query.name}/i`;
+    const searchName = req.query.name;
+    const searchTitle = req.query.title;
+    if (searchName !== "" && typeof searchName !== 'undefined') {
+      searchQuery.name = {$regex: searchName, $options: "i"};
     }
 
-    if (req.query.title !== "") {
-      searchQuery.title = `/${req.query.title}/i`;
+    if (searchTitle !== "" && typeof searchTitle !== 'undefined') {
+      searchQuery.title = {$regex: searchTitle, $options: "i"};
     }
 
-    console.log("searchQuery", searchQuery);
-
-    const scenarios = await ScenarioModel.find(searchQuery)
-      .skip(req.query.page * req.query.size)
-      .limit(req.query.size);
-    console.log("query", req.query);
+    const scenarios = await ScenarioModel.find(
+      searchQuery,
+      null,
+      {skip:req.query.page * req.query.size, limit: req.query.size}
+    ).exec();
+    
     const totalCount = await ScenarioModel.find(searchQuery).count();
     console.log(`Get all scenarios\nFind success! ${scenarios.length} records`);
     res
@@ -49,6 +51,4 @@ export const createScenario = async (req, res) => {
     // })
     // await scenario.save();
 
-  //   res.status(HTTP_STATUS.OK).json(scenario);
-  // } catch (error) {}
 };
