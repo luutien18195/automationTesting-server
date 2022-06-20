@@ -5,6 +5,6 @@ import authJwt from '../middleware/authJwt.js';
 const router = express.Router();
 
 router.get('/', [authJwt.verifyToken], getScenarios);
-router.post('/',  [authJwt.verifyToken], createScenario);
+router.post('/create',  [authJwt.verifyToken], createScenario);
 
 export default router;

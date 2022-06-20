@@ -13,7 +13,12 @@ const schema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0
-    }
+    },
+    isDeleted: Boolean,
+    creator: String,
+    listSteps: [String],
+    groupId: String,
+    idCommon: String,
 }, {timestamps: true});
 
-export const ScenarioModel = mongoose.model('Scenario', schema);
+export const ScenarioModel = mongoose.model('scenarios', schema);

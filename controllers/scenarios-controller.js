@@ -31,11 +31,24 @@ export const getScenarios = async (req, res) => {
 };
 
 export const createScenario = async (req, res) => {
-  try {
+  // try {
+    console.log("test");
     const newScenario = req.body;
     const scenario = new ScenarioModel(newScenario);
-    await scenario.save();
+    scenario.save(function (err, results) {
+        console.log(results._id);
+    });
 
-    res.status(HTTP_STATUS.OK).json(scenario);
-  } catch (error) {} 
+    // scenario.save((error) => {
+    //   if (error){
+    //       res.status(HTTP_STATUS.BAD_REQUEST).json({msg: 'sorry!server ERROR'})
+    //   }else {
+    //     res.status(HTTP_STATUS.OK).json({
+    //       msg: 'SAVE data success!'
+    //     });
+    //   }
+    //
+    // })
+    // await scenario.save();
+
 };
